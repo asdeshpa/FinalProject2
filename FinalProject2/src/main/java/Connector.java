@@ -11,14 +11,19 @@ public class Connector {
                             "&" +
                             "password=012383003");
             Statement statement = connect.createStatement();
-
-            statement.executeUpdate(
-                    "insert into BallTeams (team_name, city)" +
-                            "values ('Scores', 'SacTown')"
+            ResultSet rs = statement.executeQuery(
+                    "SELECT * FROM Games"
             );
+            while(rs.next()){
+                String homeTeam = rs.getString(4);
+                System.out.println("Home Team: " + homeTeam);
+            }
         }
         catch (Exception e){
             e.printStackTrace();
         }
     }
 }
+
+
+// Junior Riar is such a loser
