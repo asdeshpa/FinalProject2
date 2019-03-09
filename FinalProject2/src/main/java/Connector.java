@@ -26,5 +26,5 @@ public class Connector {
 }
 
 
-// Junior Riar is such a loser
+// Junior Riar 
 // I wish Anuj would just be my friend
