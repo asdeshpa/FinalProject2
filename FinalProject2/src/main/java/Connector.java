@@ -11,13 +11,10 @@ public class Connector {
                             "&" +
                             "password=012383003");
             Statement statement = connect.createStatement();
-            ResultSet rs = statement.executeQuery(
-                    "SELECT * FROM Games"
+            statement.executeUpdate(
+                    "insert into BallTeams (team_name, city)" +
+                            "values ('Scores2', 'SacTown')"
             );
-            while(rs.next()){
-                String homeTeam = rs.getString(4);
-                System.out.println("Home Team: " + homeTeam);
-            }
         }
         catch (Exception e){
             e.printStackTrace();
