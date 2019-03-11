@@ -20,7 +20,7 @@ public class MyFxApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("JavaFX App");
-
+ 
 // Home Scene
         Text label1= new Text();
         label1.setText("Basketball Database");
@@ -31,7 +31,6 @@ public class MyFxApp extends Application {
         add_team.setStyle("-fx-border-color: #cca054;");
         
         Button add_player = new Button("Add Player");
-        //add_player.relocate(200,10);
         add_player.setOnAction(e -> primaryStage.setScene(Team)); 
 
         Button add_game = new Button("Add Game");
@@ -77,21 +76,30 @@ public class MyFxApp extends Application {
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         GridPane.setConstraints(scenetitle, 0, 0);
 
+// Add Team Page
 
-// Test Button
-        
-        Label label3= new Label("test");
-        Button add_p = new Button("go back");
-        add_p.setOnAction(e -> primaryStage.setScene(Home)); 
-        VBox layout3 = new VBox(20);  
-        layout3.getChildren().addAll(label3, add_p);
-        Team = new Scene(layout3, 1200, 1000); 
+        VBox vb = new VBox(5);
+        vb.setAlignment(Pos.TOP_CENTER);
+
+        Label labelfirst= new Label("Enter Team Name");
+        Label labeltwo = new Label("Enter City: ");
+        Label label= new Label();
+                
+        Button submit= new Button("Submit");
+        TextField text= new TextField();
+        TextField text2 = new TextField();
+        submit.setOnAction(e -> {         
+            label.setText("Team Name: " + text.getText() + " City: " + text2.getText());
+        });
+    
+        vb.getChildren().addAll(labelfirst, text, labeltwo, text2, submit, label);
+
+        Team = new Scene(vb, 1200, 1000);      
 
 
         primaryStage.setScene(Home);
         primaryStage.show();
-
-        
+     
     }
 
     public static void main(String[] args) {
