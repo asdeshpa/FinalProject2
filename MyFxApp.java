@@ -15,55 +15,80 @@ public class MyFxApp extends Application {
 
     private static final String BACKGROUND_COLOR = "-fx-background-color: #fdaaff;";
 
-    Scene Home, Team, Player , Game, Stats;
+    Scene Home, Team, Player , Game, Stats, Points, Rebounds, Assists, Blocks, Steals;
     
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("JavaFX App");  
+        primaryStage.setTitle("JavaFX App"); 
  
 // Home Scene
         Text label1= new Text();
         label1.setText("Basketball Database");
         label1.setFont(Font.font("HELVETICA", 50));
-
+// add team
         Button add_team = new Button("Add Team");
         add_team.setOnAction(e -> primaryStage.setScene(Team));
         add_team.setStyle("-fx-border-color: #cca054;");
-        
+// add player        
         Button add_player = new Button("Add Player");
         add_player.setOnAction(e -> primaryStage.setScene(Player)); 
-
+// add game
         Button add_game = new Button("Add Game");
         add_game.setOnAction(e -> primaryStage.setScene(Game));  
-
+// add stats
         Button add_stats = new Button("Add Stats");
         add_stats.setOnAction(e -> primaryStage.setScene(Stats));  
-        
+// create table
+        Button create_table = new Button("Create Table");
+        create_table.setOnAction(e -> primaryStage.setScene(Stats));  
+// drop table
+        Button drop_table = new Button("Drop Table");
+        drop_table.setOnAction(e -> primaryStage.setScene(Stats));  
         
         VBox layout1 = new VBox(30);   
         layout1.setAlignment(Pos.TOP_CENTER);
-        layout1.getChildren().addAll(label1, add_team, add_player, add_game, add_stats);
+        layout1.getChildren().addAll(label1, add_team, add_player, add_game, add_stats, create_table, drop_table);
 
 
         Text label2= new Text();
         label2.setText("Queries");
         label2.setFont(Font.font("HELVETICA", 50));
+// 1
+        Button most_points = new Button("Select the player with the most points per game");
+        most_points.setOnAction(e -> primaryStage.setScene(Team));  
+// 2
+        Button most_rebs = new Button("Select the player with the most rebounds per game");
+        most_rebs.setOnAction(e -> primaryStage.setScene(Team)); 
+// 3        
+        Button most_assists = new Button("Select the player with the most assists per game");
+        most_assists.setOnAction(e -> primaryStage.setScene(Team));  
+// 4
+        Button most_steals = new Button("Select the player with the most steals per game");
+        most_steals.setOnAction(e -> primaryStage.setScene(Team));  
+// 5
+        Button most_blocks = new Button("Select the player with most blocks per game");
+        most_blocks.setOnAction(e -> primaryStage.setScene(Team));  
+// 6
+        Button points_query = new Button("List the players who have scored more than (insert number here) points");
+        points_query.setOnAction(e -> primaryStage.setScene(Points));  
+// 7
+        Button rebound_query = new Button("List the players who have grabbed more than (insert number here) rebounds");
+        rebound_query.setOnAction(e -> primaryStage.setScene(Rebounds));  
+// 8
+        Button assist_query = new Button("List the players who have tallied more than (insert number here) assists");
+        assist_query.setOnAction(e -> primaryStage.setScene(Assists));  
+// 9
+        Button blocks_query = new Button("List the players who have more than (insert number here) blocks");
+        blocks_query.setOnAction(e -> primaryStage.setScene(Blocks));  
+// 10
+        Button steals_query = new Button("List the players who have more than (insert number here) steals");
+        steals_query.setOnAction(e -> primaryStage.setScene(Steals));  
 
-        Button get_team = new Button("Get Team");
-        get_team.setOnAction(e -> primaryStage.setScene(Team));  
-
-        Button get_player = new Button("Get Player");
-        get_player.setOnAction(e -> primaryStage.setScene(Team)); 
-        
-        Button get_game = new Button("Get Game");
-        get_game.setOnAction(e -> primaryStage.setScene(Team));  
-
-        Button get_stats = new Button("Get Stats");
-        get_stats.setOnAction(e -> primaryStage.setScene(Team));  
 
         VBox layout2 = new VBox(30);
         layout2.setAlignment(Pos.TOP_CENTER);
-        layout2.getChildren().addAll(label2, get_team, get_player, get_game, get_stats);
+        layout2.getChildren().addAll(label2, most_points, most_rebs, most_assists, most_steals, most_blocks,
+                                        points_query, rebound_query, assist_query, blocks_query, steals_query);
 
         SplitPane split_pane = new SplitPane(); 
         split_pane.getItems().add(layout1);
@@ -98,7 +123,7 @@ public class MyFxApp extends Application {
 
         Team = new Scene(team_vb, 1200, 1000);      
 
-// Player Scene
+// Player button
 
         VBox player_vb = new VBox(5);
         player_vb.setAlignment(Pos.TOP_CENTER);
@@ -124,9 +149,8 @@ public class MyFxApp extends Application {
 
         Player = new Scene(player_vb, 1200, 1000);      
 
-         
-        
-// Game Scene
+                
+// Game button
         VBox game_vb = new VBox(5);
         game_vb.setAlignment(Pos.TOP_CENTER);
 
@@ -161,7 +185,7 @@ public class MyFxApp extends Application {
 
         Game = new Scene(game_vb, 1200, 1000);       
   
-// Stats Scene
+// Stats button
 
         VBox stats_vb = new VBox(5);
         stats_vb.setAlignment(Pos.TOP_CENTER);
@@ -205,7 +229,111 @@ public class MyFxApp extends Application {
                                     stats_label9, stats_text9, stats_submit, stats_label, stats_go_back);
 
         Stats = new Scene(stats_vb, 1200, 1000);   
-        
+
+
+// Points Query 
+        VBox points_vb = new VBox(5);
+        points_vb.setAlignment(Pos.TOP_CENTER);
+
+        Label points_label= new Label("Enter Points: ");
+        Label finalpoints_label= new Label();
+
+        TextField points_text= new TextField();
+                
+        Button points_submit= new Button("Submit");
+        Button points_go_back = new Button("Go Back");
+        points_go_back.setOnAction(e -> primaryStage.setScene(Home)); 
+             
+        points_submit.setOnAction(e -> {         
+            finalpoints_label.setText("List the players who have scored more than " + points_text.getText() + " points. ");
+        });
+        points_vb.getChildren().addAll(points_label, points_text, points_submit, finalpoints_label, points_go_back);
+
+        Points = new Scene(points_vb, 1200, 1000);      
+
+// Rebounds Query
+
+        VBox reb_vb = new VBox(5);
+        reb_vb.setAlignment(Pos.TOP_CENTER);
+
+        Label reb_label= new Label("Enter Rebounds: ");
+        Label final_reb_label= new Label();
+
+        TextField reb_text= new TextField();
+                
+        Button reb_submit= new Button("Submit");
+        Button reb_go_back = new Button("Go Back");
+        reb_go_back.setOnAction(e -> primaryStage.setScene(Home)); 
+             
+        reb_submit.setOnAction(e -> {         
+            final_reb_label.setText("List the players who have grabbed more than " + reb_text.getText() + " rebounds. ");
+        });
+        reb_vb.getChildren().addAll(reb_label, reb_text, reb_submit, final_reb_label, reb_go_back);
+
+        Rebounds = new Scene(reb_vb, 1200, 1000);  
+
+// Assists Query 
+
+        VBox ast_vb = new VBox(5);
+        ast_vb.setAlignment(Pos.TOP_CENTER);
+
+        Label ast_label= new Label("Enter Assists: ");
+        Label final_ast_label= new Label();
+
+        TextField ast_text= new TextField();
+                
+        Button ast_submit= new Button("Submit");
+        Button ast_go_back = new Button("Go Back");
+        ast_go_back.setOnAction(e -> primaryStage.setScene(Home)); 
+             
+        ast_submit.setOnAction(e -> {         
+            final_ast_label.setText("List the players who have tallied more than " + ast_text.getText() + " assists. ");
+        });
+        ast_vb.getChildren().addAll(ast_label, ast_text, ast_submit, final_ast_label, ast_go_back);
+
+        Assists = new Scene(ast_vb, 1200, 1000); 
+
+// Blocks Query 
+
+        VBox blk_vb = new VBox(5);
+        blk_vb.setAlignment(Pos.TOP_CENTER);
+
+        Label blk_label= new Label("Enter Blocks: ");
+        Label final_blk_label= new Label();
+
+        TextField blk_text= new TextField();
+                
+        Button blk_submit= new Button("Submit");
+        Button blk_go_back = new Button("Go Back");
+        blk_go_back.setOnAction(e -> primaryStage.setScene(Home)); 
+             
+        blk_submit.setOnAction(e -> {         
+            final_blk_label.setText("List the players who have more than " + blk_text.getText() + " blocks. ");
+        });
+        blk_vb.getChildren().addAll(blk_label, blk_text, blk_submit, final_blk_label, blk_go_back);
+
+        Blocks = new Scene(blk_vb, 1200, 1000); 
+
+// Steals Query
+
+        VBox stl_vb = new VBox(5);
+        stl_vb.setAlignment(Pos.TOP_CENTER);
+
+        Label stl_label= new Label("Enter Steals: ");
+        Label final_stl_label= new Label();
+
+        TextField stl_text= new TextField();
+                
+        Button stl_submit= new Button("Submit");
+        Button stl_go_back = new Button("Go Back");
+        stl_go_back.setOnAction(e -> primaryStage.setScene(Home)); 
+             
+        stl_submit.setOnAction(e -> {         
+            final_stl_label.setText("List the players who have more than " + stl_text.getText() + " steals. ");
+        });
+        stl_vb.getChildren().addAll(stl_label, stl_text, stl_submit, final_stl_label, stl_go_back);
+
+        Steals = new Scene(stl_vb, 1200, 1000); 
 
         primaryStage.setScene(Home);
         primaryStage.show();
@@ -216,3 +344,4 @@ public class MyFxApp extends Application {
         Application.launch(args);
     }
 }
+
