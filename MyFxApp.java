@@ -15,13 +15,11 @@ public class MyFxApp extends Application {
 
     private static final String BACKGROUND_COLOR = "-fx-background-color: #fdaaff;";
 
-    Scene Home, Team, Player , Game; //, Stats;
+    Scene Home, Team, Player , Game, Stats;
     
-    
-
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("JavaFX App");
+        primaryStage.setTitle("JavaFX App");  
  
 // Home Scene
         Text label1= new Text();
@@ -39,7 +37,7 @@ public class MyFxApp extends Application {
         add_game.setOnAction(e -> primaryStage.setScene(Game));  
 
         Button add_stats = new Button("Add Stats");
-        add_stats.setOnAction(e -> primaryStage.setScene(Team));  
+        add_stats.setOnAction(e -> primaryStage.setScene(Stats));  
         
         
         VBox layout1 = new VBox(30);   
@@ -100,7 +98,7 @@ public class MyFxApp extends Application {
 
         Team = new Scene(team_vb, 1200, 1000);      
 
-// Player button
+// Player Scene
 
         VBox player_vb = new VBox(5);
         player_vb.setAlignment(Pos.TOP_CENTER);
@@ -128,7 +126,7 @@ public class MyFxApp extends Application {
 
          
         
-// Game button
+// Game Scene
         VBox game_vb = new VBox(5);
         game_vb.setAlignment(Pos.TOP_CENTER);
 
@@ -163,7 +161,50 @@ public class MyFxApp extends Application {
 
         Game = new Scene(game_vb, 1200, 1000);       
   
-// Stats button
+// Stats Scene
+
+        VBox stats_vb = new VBox(5);
+        stats_vb.setAlignment(Pos.TOP_CENTER);
+
+
+        Label stats_label1 = new Label("Enter Player ID: ");
+        Label stats_label2 = new Label("Enter Jersey Number: ");
+        Label stats_label3 = new Label("Enter Team Name: ");
+        Label stats_label4 = new Label("Enter Game ID: ");
+        Label stats_label5 = new Label("Enter Points: ");
+        Label stats_label6 = new Label("Enter Rebounds: ");
+        Label stats_label7 = new Label("Enter Assists: ");
+        Label stats_label8 = new Label("Enter Blocks: ");
+        Label stats_label9 = new Label("Enter Steals: ");
+
+        Label stats_label= new Label();
+                
+        TextField stats_text1 = new TextField();
+        TextField stats_text2 = new TextField();
+        TextField stats_text3 = new TextField();
+        TextField stats_text4 = new TextField();
+        TextField stats_text5 = new TextField();
+        TextField stats_text6 = new TextField();
+        TextField stats_text7 = new TextField();
+        TextField stats_text8 = new TextField();
+        TextField stats_text9 = new TextField();
+
+        Button stats_submit= new Button("Submit");
+        Button stats_go_back = new Button("Go Back");
+        stats_go_back.setOnAction(e -> primaryStage.setScene(Home)); 
+        stats_submit.setOnAction(e -> {         
+            stats_label.setText("Player ID: " + stats_text1.getText() + " Jersey Number: " + stats_text2.getText()
+                                + " Team Name: " + stats_text3.getText() + " Game ID: " + stats_text4.getText() + 
+                                " Points: " + stats_text5.getText() + " Rebounds: " + stats_text6.getText() +
+                                " Assists: " + stats_text7.getText() + " Blocks: " + stats_text8.getText() + " Steals: " + stats_text9.getText()
+                                ); });
+
+        stats_vb.getChildren().addAll(stats_label1, stats_text1, stats_label2, stats_text2, stats_label3,
+                                    stats_text3, stats_label4, stats_text4, stats_label5, stats_text5, 
+                                    stats_label6, stats_text6, stats_label7, stats_text7, stats_label8, stats_text8,  
+                                    stats_label9, stats_text9, stats_submit, stats_label, stats_go_back);
+
+        Stats = new Scene(stats_vb, 1200, 1000);   
         
 
         primaryStage.setScene(Home);
@@ -175,4 +216,3 @@ public class MyFxApp extends Application {
         Application.launch(args);
     }
 }
-
