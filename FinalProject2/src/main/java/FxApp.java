@@ -19,7 +19,7 @@ public class FxApp extends Application {
 
     private static Connection connect;
 
-    private static final String BACKGROUND_COLOR = "-fx-background-color: #fdaaff;";
+    private static final String BACKGROUND_COLOR = "-fx-background-color: #ffa5a5;";
 
     Scene Home, Team, Player , Game, Stats, Points, Rebounds, Assists, Blocks, Steals, Wins;
 
@@ -30,11 +30,90 @@ public class FxApp extends Application {
 // Home Scene
         Text label1= new Text();
         Label tableInfo = new Label();
+
         Label mostPlayer = new Label();
         Label optionSelected = new Label();
+        mostPlayer.setFont(new Font(25));
+        optionSelected.setFont(new Font(20));
+        tableInfo.setFont(new Font(20));
 
         label1.setText("Basketball Database");
         label1.setFont(Font.font("HELVETICA", 50));
+
+// show Players
+        Button show_players = new Button("Display Players");
+        show_players.setOnAction(e -> {
+            try {
+                String player = "";
+                mostPlayer.setText(player);
+                ResultSet rs = connect.createStatement().executeQuery("select * from BasketballPlayer;");
+                optionSelected.setText("Players in the database");
+                while (rs.next()) {
+                    player += rs.getInt(2);
+                    player += "\t";
+                    player += rs.getString(3);
+                    player += "\t";
+                    player += rs.getString(1);
+                    player += "\n";
+
+                    mostPlayer.setText(player);
+
+                }
+            }
+            catch (Exception e1){
+                e1.printStackTrace();
+            }
+        });
+// show Teams
+        Button show_teams = new Button("Display Teams");
+        show_teams.setOnAction(e -> {
+            try{
+                String teams = "";
+                mostPlayer.setText(teams);
+                ResultSet rs = connect.createStatement().executeQuery("select * from BallTeams;");
+                optionSelected.setText("Teams in the database");
+                while (rs.next()){
+                    teams += rs.getString(1);
+                    teams += "\t";
+                    teams += rs.getString(2);
+                    teams += "\n";
+                }
+                mostPlayer.setText(teams);
+            }
+            catch (Exception e1){
+                e1.printStackTrace();
+            }
+        });
+
+// show Games
+        Button show_games = new Button("Display Games");
+        show_games.setOnAction(e -> {
+            try {
+                String games = "";
+                mostPlayer.setText(games);
+                ResultSet rs = connect.createStatement().executeQuery("select * from BallGames;");
+                optionSelected.setText("Games in the database\n" +
+                        "ID\t Home Team \t Away Team \t Home Points \t Away Points \t Date");
+                while(rs.next()){
+                    games += rs.getInt(1);
+                    games += "\t";
+                    games += rs.getString(2);
+                    games += "\t";
+                    games += rs.getString(3);
+                    games += "\t";
+                    games += rs.getInt(4);
+                    games += "\t";
+                    games += rs.getInt(5);
+                    games += "\t";
+                    games += rs.getString(6);
+                    games += "\n";
+                }
+                mostPlayer.setText(games);
+            }
+            catch (Exception e1){
+                e1.printStackTrace();
+            }
+        });
 // add team
         Button add_team = new Button("Add Team");
         add_team.setOnAction(e -> primaryStage.setScene(Team));
@@ -51,12 +130,16 @@ public class FxApp extends Application {
 // create table
         Button create_table = new Button("Create Table");
         create_table.setOnAction(e -> {
+            mostPlayer.setText("");
+            optionSelected.setText("");
             Connector.createTables(connect);
             tableInfo.setText("Tables have been created");
         });
 // drop table
         Button drop_table = new Button("Drop Table");
         drop_table.setOnAction(e -> {
+            mostPlayer.setText("");
+            optionSelected.setText("");
             Connector.dropTables(connect);
             tableInfo.setText("Tables have been dropped");
         });
@@ -64,7 +147,8 @@ public class FxApp extends Application {
         VBox layout1 = new VBox(30);
         layout1.setAlignment(Pos.TOP_CENTER);
         layout1.getChildren().addAll(
-                label1, add_team, add_player, add_game, add_stats, create_table, drop_table, tableInfo, optionSelected, mostPlayer);
+                label1, create_table, drop_table, show_teams, show_players, show_games, add_team, add_player, add_game, add_stats,
+                tableInfo, optionSelected, mostPlayer);
 
 
         Text label2= new Text();
@@ -80,6 +164,7 @@ public class FxApp extends Application {
         most_points.setOnAction(e -> {
             ResultSet rs = Connector.pointsleader(connect);
             String playerNames = "";
+            mostPlayer.setText(playerNames);
             try{
                 while (rs.next()){
                     optionSelected.setText("Player(s) with the most points: ");
@@ -100,6 +185,7 @@ public class FxApp extends Application {
         most_rebs.setOnAction(e -> {
             ResultSet rs = Connector.reboundsleader(connect);
             String playerNames = "";
+            mostPlayer.setText(playerNames);
             try{
                 while (rs.next()){
                     optionSelected.setText("Player(s) with the most rebounds: ");
@@ -118,6 +204,7 @@ public class FxApp extends Application {
         most_assists.setOnAction(e -> {
             ResultSet rs = Connector.assistsleader(connect);
             String playerNames = "";
+            mostPlayer.setText(playerNames);
             try{
                 while (rs.next()){
                     optionSelected.setText("Player(s) with the most assists: ");
@@ -136,6 +223,7 @@ public class FxApp extends Application {
         most_steals.setOnAction(e -> {
             ResultSet rs = Connector.stealsleader(connect);
             String playerNames = "";
+            mostPlayer.setText(playerNames);
             try{
                 while (rs.next()){
                     optionSelected.setText("Player(s) with the most steals: ");
@@ -154,6 +242,7 @@ public class FxApp extends Application {
         most_blocks.setOnAction(e -> {
             ResultSet rs = Connector.blocksleader(connect);
             String playerNames = "";
+            mostPlayer.setText(playerNames);
             try{
                 while (rs.next()){
                     optionSelected.setText("Player(s) with the most blocks: ");
@@ -199,7 +288,7 @@ public class FxApp extends Application {
         split_pane.getItems().add(layout2);
         split_pane.setStyle(BACKGROUND_COLOR);
 
-        Home = new Scene(split_pane, 1200, 1000);
+        Home = new Scene(split_pane, 1500, 1000);
 
         Text scenetitle = new Text("Welcome");
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
@@ -226,7 +315,7 @@ public class FxApp extends Application {
         });
         team_vb.getChildren().addAll(team_labelfirst, text, team_labeltwo, text2, team_submit, finalteam_label, team_go_back);
 
-        Team = new Scene(team_vb, 1200, 1000);
+        Team = new Scene(team_vb, 1500, 1000);
 
 // Player button
 
@@ -255,7 +344,7 @@ public class FxApp extends Application {
         player_vb.getChildren().addAll(player_label1, player_text, player_label2, player_text2, player_label3,
                 player_text3, player_submit, player_label, player_go_back);
 
-        Player = new Scene(player_vb, 1200, 1000);
+        Player = new Scene(player_vb, 1500, 1000);
 
 
 // Game button
@@ -294,7 +383,7 @@ public class FxApp extends Application {
                 game_text3, game_label4, game_text4, game_label5, game_text5,
                 game_label6, game_text6, game_submit, game_label, game_go_back);
 
-        Game = new Scene(game_vb, 1200, 1000);
+        Game = new Scene(game_vb, 1500, 1000);
 
 // Stats button
 
@@ -349,7 +438,7 @@ public class FxApp extends Application {
                 stats_label6, stats_text6, stats_label7, stats_text7, stats_label8, stats_text8,
                 stats_label9, stats_text9, stats_submit, stats_label, stats_go_back);
 
-        Stats = new Scene(stats_vb, 1200, 1000);
+        Stats = new Scene(stats_vb, 1500, 1000);
 
 
 // Points Query
@@ -358,6 +447,8 @@ public class FxApp extends Application {
 
         Label points_label= new Label("Enter Points: ");
         Label finalpoints_label= new Label();
+        points_label.setFont(new Font(20));
+        finalpoints_label.setFont(new Font(20));
         Label playerPoints = new Label();
         TextField points_text= new TextField();
 
@@ -369,6 +460,7 @@ public class FxApp extends Application {
             finalpoints_label.setText("List the players who have scored more than " + points_text.getText() + " points. ");
             ResultSet rs = Connector.pointsGreaterThan(connect, Integer.parseInt(points_text.getText()));
             playerPoints.setText("");
+            playerPoints.setFont(new Font(20));
             String playerNames = "";
             try {
 
@@ -387,7 +479,7 @@ public class FxApp extends Application {
         });
         points_vb.getChildren().addAll(points_label, points_text, points_submit, finalpoints_label, playerPoints, points_go_back);
 
-        Points = new Scene(points_vb, 1200, 1000);
+        Points = new Scene(points_vb, 1500, 1000);
 
 // Rebounds Query
 
@@ -396,9 +488,11 @@ public class FxApp extends Application {
 
         Label reb_label= new Label("Enter Rebounds: ");
         Label final_reb_label= new Label();
+        reb_label.setFont(new Font(20));
+        final_reb_label.setFont(new Font(20));
         Label playerRebs = new Label();
         TextField reb_text= new TextField();
-
+        playerRebs.setFont(new Font(20));
         Button reb_submit= new Button("Submit");
         Button reb_go_back = new Button("Go Back");
         reb_go_back.setOnAction(e -> primaryStage.setScene(Home));
@@ -426,7 +520,7 @@ public class FxApp extends Application {
         });
         reb_vb.getChildren().addAll(reb_label, reb_text, reb_submit, final_reb_label, reb_go_back, playerRebs);
 
-        Rebounds = new Scene(reb_vb, 1200, 1000);
+        Rebounds = new Scene(reb_vb, 1500, 1000);
 
 // Assists Query
 
@@ -436,7 +530,9 @@ public class FxApp extends Application {
         Label ast_label= new Label("Enter Assists: ");
         Label final_ast_label= new Label();
         Label playerAssissts = new Label();
-
+        final_ast_label.setFont(new Font(20));
+        playerAssissts.setFont(new Font(20));
+        playerAssissts.setFont(new Font(20));
         TextField ast_text= new TextField();
 
         Button ast_submit= new Button("Submit");
@@ -464,7 +560,7 @@ public class FxApp extends Application {
         });
         ast_vb.getChildren().addAll(ast_label, ast_text, ast_submit, final_ast_label, ast_go_back, playerAssissts);
 
-        Assists = new Scene(ast_vb, 1200, 1000);
+        Assists = new Scene(ast_vb, 1500, 1000);
 
 // Blocks Query
 
@@ -474,7 +570,9 @@ public class FxApp extends Application {
         Label blk_label= new Label("Enter Blocks: ");
         Label final_blk_label= new Label();
         Label playerBlocks = new Label();
-
+        blk_label.setFont(new Font(20));
+        final_blk_label.setFont(new Font(20));
+        playerBlocks.setFont(new Font(20));
         TextField blk_text= new TextField();
 
         Button blk_submit= new Button("Submit");
@@ -502,7 +600,7 @@ public class FxApp extends Application {
         });
         blk_vb.getChildren().addAll(blk_label, blk_text, blk_submit, final_blk_label, blk_go_back, playerBlocks);
 
-        Blocks = new Scene(blk_vb, 1200, 1000);
+        Blocks = new Scene(blk_vb, 1500, 1000);
 
 // Steals Query
 
@@ -512,7 +610,9 @@ public class FxApp extends Application {
         Label stl_label= new Label("Enter Steals: ");
         Label final_stl_label= new Label();
         Label playerSteals = new Label();
-
+        final_stl_label.setFont(new Font(20));
+        stl_label.setFont(new Font(20));
+        playerSteals.setFont(new Font(20));
         TextField stl_text= new TextField();
 
         Button stl_submit= new Button("Submit");
@@ -540,7 +640,7 @@ public class FxApp extends Application {
         });
         stl_vb.getChildren().addAll(stl_label, stl_text, stl_submit, final_stl_label, stl_go_back, playerSteals);
 
-        Steals = new Scene(stl_vb, 1200, 1000);
+        Steals = new Scene(stl_vb, 1500, 1000);
 
         primaryStage.setScene(Home);
         primaryStage.show();
@@ -556,7 +656,9 @@ public class FxApp extends Application {
         Label teamWins = new Label();
 
         TextField win_text= new TextField();
-
+        win_label.setFont(new Font(20));
+        final_win_label.setFont(new Font(20));
+        teamWins.setFont(new Font(20));
         Button win_submit= new Button("Submit");
         Button win_go_back = new Button("Go Back");
             win_go_back.setOnAction(e -> primaryStage.setScene(Home));
@@ -565,11 +667,20 @@ public class FxApp extends Application {
             ResultSet rs = Connector.winsForTeam(connect, win_text.getText());
             teamWins.setText("");
             final_win_label.setText("");
+            String team = "";
             try {
-
                 while (rs.next()) {
-                    final_win_label.setText("Number of wins for: " + win_text.getText());
-                    teamWins.setText(((Integer)rs.getInt(2)).toString());
+
+                    //teamWins.setText(((Integer)rs.getInt(2)).toString());
+                    team += ((Integer)rs.getInt(2)).toString();
+                }
+                final_win_label.setText("Number of wins for: " + win_text.getText());
+                if (team.equals("")) {
+                    teamWins.setText("0");
+
+                }
+                else{
+                    teamWins.setText(team);
                 }
 
             }
@@ -577,10 +688,11 @@ public class FxApp extends Application {
                 teamWins.setText("Team not found");
                 e1.printStackTrace();
             }
+
         });
             wins_vb.getChildren().addAll(win_label, win_text, win_submit, final_win_label, teamWins, win_go_back );
 
-        Wins = new Scene(wins_vb, 1200, 1000);
+        Wins = new Scene(wins_vb, 1500, 1000);
 
             primaryStage.setScene(Home);
             primaryStage.show();

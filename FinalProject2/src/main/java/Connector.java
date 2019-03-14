@@ -24,7 +24,7 @@ public class Connector {
               //      3,
                 //    "Kings", 1, 100, 50, 50, 10, 10);
             //blocksGreaterThan(connect, 10);
-            winsForTeam(connect, "Kings");
+            //winsForTeam(connect, "hi");
         } catch (Exception e) {
             e.printStackTrace();
         }
